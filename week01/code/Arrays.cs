@@ -13,7 +13,20 @@ public static class Arrays
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // Plan:
+        // The first thing I will do is create a new array of doubles with the given length. 
+        // Secondly, I will use a loop to fill each position of the array. 
+        // Thirdly, for each index i, calculate the multiple: number * (i + 1). 
+        // Finally, store that value in the array at index i and, once the loop is finished, return the filled array.
+
+        var result = new double[length];
+
+        for (var i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result; // replace this return statement with your own
     }
 
     /// <summary>
