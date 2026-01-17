@@ -37,17 +37,21 @@ public class TakingTurnsQueue
         {
             throw new InvalidOperationException("No one in the queue.");
         }
-        else
+        // Here I remove the next person in FIFO order
+        Person person = _people.Dequeue();
+        // Turns <= 0 means infinite turns, so the person is always re‑enqueued and their Turns value is not changed.
+        if (person.Turns <= 0)
         {
-            Person person = _people.Dequeue();
-            if (person.Turns > 1)
-            {
-                person.Turns -= 1;
-                _people.Enqueue(person);
-            }
-
+            _people.Enqueue(person);
             return person;
         }
+        // If the person has finite turns, reduce their Turns by one and re‑enqueue them only when the updated value is greater than zero.
+        person.Turns -= 1;
+        if (person.Turns > 0)
+        {
+            _people.Enqueue(person);
+        }
+        return person;
     }
 
     public override string ToString()
