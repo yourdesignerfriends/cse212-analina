@@ -23,15 +23,23 @@
         }
 
         // Find the index of the item with the highest priority to remove
+        // Defect(s) Found:
+        // I fixed the Dequeue method by making the loop check all elements, 
+        // adjusting the comparison so equal priorities keep FIFO order, 
+        // and removing the selected item from the list. With these changes, 
+        // the queue now returns and removes the correct highest priority element.
         var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
+        for (int index = 1; index < _queue.Count; index++)
         {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
+            {
                 highPriorityIndex = index;
+            }
         }
 
         // Remove and return the item with the highest priority
         var value = _queue[highPriorityIndex].Value;
+        _queue.RemoveAt(highPriorityIndex);
         return value;
     }
 
