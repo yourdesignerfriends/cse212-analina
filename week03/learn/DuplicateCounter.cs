@@ -25,6 +25,35 @@
     private static int CountDuplicates(int[] data)
     {
         // Add code here.
-        return 0;
+        // In this part, I create a HashSet called ‘unique’. This set stores all the 
+        // values that appear for the first time. Since a HashSet does not allow duplicates, 
+        // each number is added only once
+        var unique = new HashSet<int>();
+
+        //Then I create an integer counter called ‘duplicates’. 
+        //This counter increases each time we find a repeated number.
+
+        var duplicates = 0;
+
+        // The next step is to iterate through each number in the ‘data’ array. 
+        // In each iteration, ‘x’ represents one number from the array.
+
+        foreach (var x in data)
+        {
+            // Inside the loop, I check if the number ‘x’ is already in the ‘unique’ set.
+            // If it is, it means we have seen this number before, so we increase the 
+            // ‘duplicates’ counter by one. If it is not in the set, we add it to the 
+            // ‘unique’ set for future reference.
+
+            if (unique.Contains(x))
+            {
+                duplicates++;
+            }
+            else
+            {
+                unique.Add(x);
+            }
+        }
+        return duplicates;
     }
 }
