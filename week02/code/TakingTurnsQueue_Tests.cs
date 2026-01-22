@@ -10,13 +10,18 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
+
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: ❌ FAILED: TestTakingTurnsQueue_FiniteRepetition (7ms)
-    // Assert.AreEqual failed. Expected:<Bob>. Actual:<Sue>. What happens 
-    // here is that the GetNextPerson method returned Sue instead of Bob, 
-    // which shows that the queue does not maintain FIFO order nor correctly 
-    // re-enqueue people with remaining turns. The turn values are not 
-    // decremented as required, and the entire sequence becomes disordered. 
+    // The queue should return people in strict FIFO order while decrementing turns
+    // and re‑enqueuing any person who still has turns remaining.
+    
+    // Defect(s) Found: 
+    // - First dequeue returned <Sue> instead of <Bob>.
+    // - FIFO order is broken from the very first GetNextPerson().
+    // - Turns are not being decremented correctly.
+    // - People with remaining turns are not being re‑enqueued properly.
+    // - Expected sequence cannot be produced with current implementation.
+    
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -47,14 +52,16 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
+    
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: ❌ FAILED: TestTakingTurnsQueue_AddPlayerMidway (7ms)
-    // Assert.AreEqual failed. Expected:<Bob>. Actual:<Sue>. The test shows that the 
-    // queue fails from the first call to GetNextPerson(), returning Sue instead of Bob 
-    // and breaking the circular FIFO order. The turns are not updated or re‑enqueued 
-    // correctly, and the queue state is already incorrect before adding George, 
-    // making the expected sequence impossible. This confirms that the logic of 
-    // TakingTurnsQueue is defective
+    // After 5 dequeues, George(3) is added to the queue. The queue must continue
+    // respecting FIFO order, decrementing turns, and re‑enqueuing players with remaining turns.
+
+    // Defect(s) Found: 
+    // - First dequeue returned <Sue> instead of <Bob>, same defect as Test 1.
+    // - Queue order is already incorrect before adding George.
+    // - Re‑enqueue logic fails, causing the sequence to diverge immediately.
+    // - Mid‑insertion cannot be validated because the base queue state is wrong.
 
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
@@ -96,13 +103,16 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
+
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: ❌ FAILED: TestTakingTurnsQueue_ForeverZero (7ms) 
-    // Assert.AreEqual failed. Expected:<Bob>. Actual:<Sue>. 
-    // Here, the first call to GetNextPerson() returns Sue instead of Bob, 
-    // showing that the queue is incorrect. The error occurs because the circular 
-    // FIFO order is not being respected, and people with infinite turns (Turns = 0) 
-    // are not re-enqueued correctly, since the code treats them as if they had no turns remaining.
+    // A person with 0 or fewer turns has infinite turns and must always be
+    // re‑enqueued without modifying their Turns value.
+
+    // Defect(s) Found: 
+    // - First dequeue returned <Sue> instead of <Bob>.
+    // - People with infinite turns (0) are treated as if they had no turns left.
+    // - Infinite‑turn players are not re‑enqueued correctly.
+    // - FIFO order is violated from the start.
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -132,9 +142,14 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
+    
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: This was the result when running the test: ✅ PASSED: TestTakingTurnsQueue_Empty (1ms) , 
-    // which means that there are no defects on the empty-queue yay!
+    //Negative turns also represent infinite turns. Tim must always be
+    // re‑enqueued and his Turns value must remain unchanged.
+
+    // Defect(s) Found: 
+    // Infinite‑turn behavior with negative values works as expected.
+    // which means that there are no defects yay!
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -160,9 +175,14 @@ public class TakingTurnsQueueTests
 
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
+    
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: No defects were found; the empty-queue case is working correctly. 
-    // I’m adding the console output here as a reference. ✅ PASSED: TestTakingTurnsQueue_Empty (1ms)
+    // Calling GetNextPerson() on an empty queue must throw an
+    // InvalidOperationException with the message:
+    // "No one in the queue."
+    
+    // Defect(s) Found: 
+    // No defects were found; the empty-queue case is working correctly.
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
