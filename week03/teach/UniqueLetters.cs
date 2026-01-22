@@ -15,14 +15,30 @@
     /// <returns>true if all letters are unique, otherwise false</returns>
     private static bool AreUniqueLetters(string text) {
         // TODO Problem 1 - Replace the O(n^2) algorithm to use sets and O(n) efficiency
-        for (var i = 0; i < text.Length; ++i) {
-            for (var j = 0; j < text.Length; ++j) {
-                // Don't want to compare to yourself ... that will always result in a match
-                if (i != j && text[i] == text[j])
-                    return false;
-            }
-        }
+        
+        // Create a HashSet to store letters we have already seen
+        var seen = new HashSet<char>();
 
+        // Loop through each character in the string
+        foreach (var letter in text)
+        {
+            // If the letter is already in the set, it's a duplicate
+            if (seen.Contains(letter))
+            {
+                return false;
+            }
+            // Otherwise, add the letter to the set
+            seen.Add(letter);
+        }
+        // If we finish the loop without finding duplicates, return true
         return true;
     }
 }
+
+// Big O EXPLANATION:         
+// This solution is O(n) because I only go through the string one time. 
+// For each character, I use a HashSet to check whether I’ve seen it before. 
+// Both Contains and Add on a HashSet run in constant time, O(1). 
+// So the total work is one loop of n characters, each doing 
+// constant‑time operations. When you combine O(n) with O(1) 
+// steps inside the loop, the overall performance stays O(n).
