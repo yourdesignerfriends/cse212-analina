@@ -22,7 +22,38 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+
+        // I use a HashSet so I can check for a word's reverse in constant time (O(1)). 
+        // This keeps the whole algorithm running in O(n), which is exactly what the problem requires.
+        var set = new HashSet<string>(words);
+
+        // This will be the list where the pairs that are found will be stored
+        var result = new List<string>();
+
+        // Then here we loop through each word a single time.
+        foreach (var word in words)
+        {
+            // Here we create a special case: if both letters are the same, for example 'aa', 
+            // it cannot form a valid symmetric pair.
+            if (word[0] == word[1])
+                continue;
+            
+            // Here we build the reverse of the word. Example: am - ma
+            string reversed = new string(new char[] { word[1], word[0] });
+
+            // Here we check if the reversed word exists in the set
+            if (set.Contains(reversed))
+            {
+                // To avoid duplicates, we only add the pair if the original word is smaller than its reverse
+                if (string.Compare(word, reversed) < 0)
+                {
+                    result.Add($"{word} & {reversed}");
+                }
+            }
+        }
+
+        // Finally, we convert the list to an array and return it
+        return result.ToArray();
     }
 
     /// <summary>
