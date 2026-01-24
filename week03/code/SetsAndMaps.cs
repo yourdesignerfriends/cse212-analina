@@ -193,6 +193,21 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        
+        // Step 1: Create a list where I will store each formatted earthquake description.
+        var earthquakeSummaries = new List<string>();
+        // Step 2: Loop through each earthquake event inside the 'features' list.
+        foreach (var singleEvent in featureCollection.features)
+        {
+            // Step 3: Extract the place and magnitude from the event's properties.
+            var eventLocation = singleEvent.properties.place;
+            var eventMagnitude = singleEvent.properties.mag;
+            // Step 4: Format the string exactly as required.
+            string summaryLine = $"{eventLocation} - Mag {eventMagnitude}";
+            // Step 5: Add the formatted string to my list.
+            earthquakeSummaries.Add(summaryLine);
+        }
+        // Step 6: Convert the list to an array and return it.
+        return earthquakeSummaries.ToArray();
     }
 }
