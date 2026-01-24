@@ -115,7 +115,51 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // To solve this problem, I will first normalize both words by converting them, to lowercase 
+        // and removing any spaces. Then I will use a dictionary to count how many times each letter 
+        // appears in the first word. After that, I will go through the second word and decrease 
+        // the counts. If a letter is not found in the dictionary or any count becomes negative, 
+        // then they are not anagrams. Finally, if all counts end at zero, the two words are anagrams.
+
+        // Normalize both words: lowercase and remove spaces
+        var normalizeWord1 = word1.ToLower().Replace(" ", "");
+        var normalizeWord2 = word2.ToLower().Replace(" ", "");
+        // If the cleaned words don't have the same length, they can't be anagrams
+        if (normalizeWord1.Length != normalizeWord2.Length)
+        {
+            return false;
+        }
+        // Dictionary to store how many times each letter appears in normalizeWord1
+        var letterCounts = new Dictionary<char, int>();
+        // Count letters from the first word
+        foreach (var letter in normalizeWord1)
+        {
+            if (letterCounts.ContainsKey(letter))
+            {
+                letterCounts[letter]++;
+            }
+            else
+            {
+                letterCounts[letter] = 1;
+            }
+        }
+        // Subtract counts using the second word
+        foreach (var letter in normalizeWord2)
+        {
+            // If the letter doesn't exist, they are not anagrams
+            if (!letterCounts.ContainsKey(letter))
+            {
+                return false;
+            }
+            letterCounts[letter]--;
+            // If the count goes negative, normalizeWord2 has extra letters
+            if (letterCounts[letter] < 0)
+            {
+                return false;
+            }
+        }
+        // If all counts are zero, they are anagrams
+        return true;
     }
 
     /// <summary>
