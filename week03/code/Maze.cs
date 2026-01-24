@@ -33,6 +33,17 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+        // Get the list of allowed movements for my current position.
+        var moves = _mazeMap[(_currX, _currY)];
+        // Check if I am allowed to move left (index 0).
+        bool canMoveLeft = moves[0];
+        // If I cannot move left, it means there is a wall.
+        if (!canMoveLeft)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        // If the movement is allowed, update my position by moving one space to the left.
+        _currX--;
     }
 
     /// <summary>
@@ -42,6 +53,17 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        // Get the list of allowed movements for my current position.
+        var moves = _mazeMap[(_currX, _currY)];
+        // Check if I am allowed to move right (index 1).
+        bool canMoveRight = moves[1];
+        // If I cannot move right, it means there is a wall.
+        if (!canMoveRight)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        // If the movement is allowed, update my position by moving one space to the right.
+        _currX++;
     }
 
     /// <summary>
@@ -51,6 +73,17 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        // Get the list of allowed movements for my current position.
+        var moves = _mazeMap[(_currX, _currY)];
+        // Check if I am allowed to move up (index 2).
+        bool canMoveUp = moves[2];
+        // If I cannot move up, it means there is a wall above me.
+        if (!canMoveUp)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        // If the movement is allowed, update my position by moving one space up.
+        _currY--;
     }
 
     /// <summary>
@@ -60,6 +93,17 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+        // Get the list of allowed movements for my current position.
+        var moves = _mazeMap[(_currX, _currY)];
+        // Check if I am allowed to move down (index 3).
+        bool canMoveDown = moves[3];
+        // If I cannot move down, it means there is a wall below me.
+        if (!canMoveDown)
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        // If the movement is allowed, update my position by moving one space down.
+        _currY++;
     }
 
     public string GetStatus()
