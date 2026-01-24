@@ -66,7 +66,7 @@ public static class SetsAndMaps
     /// file.
     /// </summary>
     /// <param name="filename">The name of the file to read</param>
-    /// <returns>fixed array of divisors</returns>
+    /// <returns>A dictionary with each degree and how many times it appears</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
@@ -74,8 +74,25 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
-        }
+            // To solve this problem, I will read the file line by line, split each line 
+            // by commas, extract column 4, trim spaces, and update the dictionary 
+            // by increasing the count for each degree.
 
+            // The degree is in column 4 (index 3), so we take it and remove extra spaces
+            var degree = fields[3].Trim();
+
+            // If the degree already exists in the dictionary, we increase the count
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                // If it's the first time we see this degree, we start the count at 1
+                degrees[degree] = 1;
+            }
+        }
+        // Finally, we return the dictionary with all the degrees and their counts
         return degrees;
     }
 
