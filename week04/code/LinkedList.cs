@@ -53,7 +53,6 @@ public class LinkedList : IEnumerable<int>
         }
     }
 
-
     /// <summary>
     /// Remove the first node (i.e. the head) of the linked list.
     /// </summary>
@@ -76,13 +75,27 @@ public class LinkedList : IEnumerable<int>
         }
     }
 
-
     /// <summary>
     /// Remove the last node (i.e. the tail) of the linked list.
     /// </summary>
     public void RemoveTail()
     {
         // TODO Problem 2
+        // Here I check whether head and tail refer to the same node. 
+        // This covers two situations: an empty list or a list with a single node. 
+        // If I remove the tail in either case, the list should become empty
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        // If the list has more than one node, the only change happens at the tail. We just 
+        // need to move the tail one step back and disconnect the last node.
+        else if (_tail is not null)
+        {
+            _tail = _tail.Prev; 
+            _tail!.Next = null; 
+        }
     }
 
     /// <summary>
