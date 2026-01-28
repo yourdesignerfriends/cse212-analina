@@ -140,6 +140,37 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+        // First, I start searching from the head to find the first 
+        // node that contains the value we want to remove.
+        Node? current = _head;
+
+        while (current is not null)
+        {
+            // If we find the node with the matching value, we stop searching.
+            if (current.Data == value)
+            {
+                // Case 1: the node to remove is the head.
+                if (current == _head)
+                {
+                    RemoveHead();
+                }
+                // Case 2: the node to remove is the tail.
+                else if (current == _tail)
+                {
+                    RemoveTail();
+                }
+                // Case 3: the node is somewhere in the middle.
+                else
+                {
+                    current.Prev!.Next = current.Next;
+                    current.Next!.Prev = current.Prev;
+                }
+                // Once the node is removed, we stop the function.
+                return;
+            }
+            // If this node is not a match, move to the next one.
+            current = current.Next; 
+        }
     }
 
     /// <summary>
