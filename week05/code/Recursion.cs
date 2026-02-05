@@ -15,7 +15,19 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        // Step 1: Identify the base case, In recursion, we always need 
+        // a stopping point. For this problem, if n <= 0, there 
+        // are no more squares left to add. So we simply return 0.
+        if (n <= 0)
+        {
+            return 0;
+        }
+        // Step 2: Here I'm defining the smaller problem. In recursion, 
+        // every call needs to work on a smaller version of the same problem.
+        int currentSquare = n * n;
+        int smallerProblem = SumSquaresRecursive(n - 1);
+        // Step 3: Now I combine the results. 
+        return currentSquare + smallerProblem;
     }
 
     /// <summary>
