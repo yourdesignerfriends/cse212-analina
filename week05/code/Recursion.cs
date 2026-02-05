@@ -52,6 +52,25 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        // Step 1: If the word I'm building has already reached the target length, then this permutation 
+        // is complete. I add it to the results and stop here.
+        if (word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+        // Step 2: Otherwise, I still need to keep building the permutation. I go through each letter and decide whether 
+        // I can use it next.
+        foreach (char letter in letters)
+        {
+            // I only add this letter if it hasn't been used yet in the current word. This keeps each permutation clean 
+            // and without repeated letters.
+            if (!word.Contains(letter))
+            {
+                // Step 3: Add the letter to the word and continue the recursion. Each recursive call builds the word one letter at a time.
+                PermutationsChoose(results, letters, size, word + letter);
+            }
+        }
     }
 
     /// <summary>
