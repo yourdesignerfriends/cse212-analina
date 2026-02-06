@@ -198,10 +198,46 @@ public static class Recursion
         }
         
         // currPath.Add((1,2)); // Use this syntax to add to the current path
+        // Thanks for the tip, it made the syntax much clearer for me.
 
         // TODO Start Problem 5
         // ADD CODE HERE
 
+        // Before moving forward, I make sure this step actually makes sense: 
+        // - It's inside the maze boundaries 
+        // - It's not a wall 
+        // - It's not a square I've already visited in this same path 
+        // If any of those fail, I simply stop exploring this direction.
+        if (!maze.IsValidMove(currPath, x, y))
+        {
+            return;
+        }
+        
+        // I add the current position to the path so it becomes part of the journey.
+        currPath.Add((x, y));
+
         // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+
+        // If this square is the end of the maze, then the path I'm holding is a complete solution. I save it and 
+        // step back so the recursion can keep searching for other possibilities.
+        if (maze.IsEnd(x, y))
+        {
+            results.Add(currPath.AsString());
+            currPath.RemoveAt(currPath.Count - 1);
+            return;
+        }
+
+        // From here, I explore all four possible directions. Each recursive call is like asking: What if I try going this way?
+        // right
+        SolveMaze(results, maze, x + 1, y, currPath);
+        // down
+        SolveMaze(results, maze, x, y + 1, currPath);
+        // left
+        SolveMaze(results, maze, x - 1, y, currPath);
+        // up
+        SolveMaze(results, maze, x, y - 1, currPath);
+
+        // If I reach this point, it means I've already tried every direction from this square. Time to remove it from the path and go back.
+        currPath.RemoveAt(currPath.Count - 1);
     }
 }
