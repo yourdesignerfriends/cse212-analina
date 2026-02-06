@@ -169,6 +169,20 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        // Step 1: I look for the first '*' in the pattern. If there isn't one, then this pattern is already complete.
+        int index = pattern.IndexOf('*');
+        // Step 2: If no wildcard was found, this is a full binary string. I can add it to the results and stop exploring this path.
+        if (index == -1)
+        {
+            results.Add(pattern);
+            return;
+        }
+        // Step 3: If I did find a '*', I replace it with '0' first and explore that option through recursion.
+        string withZero = pattern[..index] + "0" + pattern[(index + 1)..];
+        WildcardBinary(withZero, results);
+        // Step 4: Then I replace the same '*' with '1' and explore that path as well.
+        string withOne = pattern[..index] + "1" + pattern[(index + 1)..];
+        WildcardBinary(withOne, results);
     }
 
     /// <summary>
