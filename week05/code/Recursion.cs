@@ -117,7 +117,7 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
-        // Base Cases
+        // Base Cases Thanks for giving us these base cases already!
         if (s == 0)
             return 0;
         if (s == 1)
@@ -126,11 +126,30 @@ public static class Recursion
             return 2;
         if (s == 3)
             return 4;
-
         // TODO Start Problem 3
-
+        // Step 1: If this is the very first call, I need to create the dictionary. 
+        // All recursive calls will share this same dictionary.
+        if (remember == null)
+        {
+            remember = new Dictionary<int, decimal>();
+        }
+        // Step 2: Before doing any work, I check if I already solved this 's' If the 
+        // dictionary has the answer, I simply return it. This avoids repeating the same expensive calculations.
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        // Step 3: If the value is not in the dictionary, I compute it using recursion. The number of ways to climb 's' 
+        // stairs is the sum of: ways to climb from s-1, s-2, and s-3. I make sure to pass the 
+        // same dictionary to all recursive calls.
+        decimal ways = 
+            CountWaysToClimb(s - 1, remember) + 
+            CountWaysToClimb(s - 2, remember) + 
+            CountWaysToClimb(s - 3, remember);     
+        // Step 4: I store the result in the dictionary so that if I ever need CountWaysToClimb(s) again, I can return it instantly.
+        remember[s] = ways;
+        // Return the final computed value.
         return ways;
     }
 
