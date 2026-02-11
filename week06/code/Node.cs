@@ -40,7 +40,30 @@ public class Node
     public bool Contains(int value)
     {
         // TODO Start Problem 2
-        return false;
+
+        // First, I check if the value matches mine. If it does, then I have 
+        // found exactly what we were looking for.
+        if (value == Data)
+            return true;
+
+        // If the value is smaller than mine, 
+        // I know the answer must be somewhere in my left subtree.
+        if (value < Data)
+        {
+            // If I do not have a left child, then the value simply is not here
+            if (Left is null)
+                return false;
+            // Otherwise, I let my left child continue the search.
+            return Left.Contains(value);
+        }
+        else
+        {
+            // If the value is greater than mine, it must be in my right subtree
+            if (Right is null)
+                return false;
+            // If I do have a right child, I pass the search along to them.
+            return Right.Contains(value);
+        }
     }
 
     public int GetHeight()
