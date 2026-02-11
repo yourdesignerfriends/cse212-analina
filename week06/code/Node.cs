@@ -13,6 +13,12 @@ public class Node
     {
         // TODO Start Problem 1
 
+        // First, I check if the value is the same as mine. If it is, 
+        // then this number already lives in the tree. Since I am building a sorted set, 
+        // I simply stop here because I do not want to add duplicates.
+        if (value == Data)
+            return;
+            
         if (value < Data)
         {
             // Insert to the left
