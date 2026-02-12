@@ -69,6 +69,24 @@ public class Node
     public int GetHeight()
     {
         // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+        
+        // If I have no children at all, then my height is simply 1. I am the only level in this subtree.
+        if (Left is null && Right is null)
+            return 1;
+        
+        // I start by assuming the height of each subtree is 0.
+        int leftHeight = 0;
+        int rightHeight = 0;
+
+        // If I do have a left child, I ask them for their height.
+        if (Left is not null)
+            leftHeight = Left.GetHeight();
+
+        // If I have a right child, I ask them as well.
+        if (Right is not null)
+            rightHeight = Right.GetHeight();
+
+        // My height is one plus the taller of my two subtrees.
+        return 1 + Math.Max(leftHeight, rightHeight); // Replace this line with the correct return statement(s)
     }
 }
